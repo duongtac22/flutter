@@ -4,7 +4,185 @@ import 'package:flutter_tutorial/models/movie.dart';
 import '../../dummy_data.dart';
 import '../settings/settings_view.dart';
 
-/// Displays a list of SampleItems.
+late TabController tabController;
+
+class TabbedContainer extends StatelessWidget {
+  const TabbedContainer({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const DefaultTabController(
+      length: 2,
+      child: SizedBox(
+        width: double.infinity,
+        height: 380,
+        child: HomeMovieTabs(),
+      ),
+    );
+  }
+}
+
+// create PresentMoviesList widget
+class PresentMoviesList extends StatelessWidget {
+  const PresentMoviesList({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: movies.length,
+        itemBuilder: (BuildContext context, int index) {
+          // final movie = movies[index];
+          return Padding(
+              padding: const EdgeInsets.all(10),
+              child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: SizedBox(
+                      width: 150,
+                      height: 200,
+                      // child: Image(
+                      //     image: AssetImage(movies[index].poster),
+                      //     fit: BoxFit.cover),
+                      child: Card(
+                        child: ClipRRect(
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(4)),
+                            child: SizedBox(
+                              width: 150,
+                              height: double.minPositive,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Image(
+                                    image: AssetImage(movies[index].poster),
+                                    height: 200,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8),
+                                    child: Text(
+                                      movies[index].title,
+                                      style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )),
+                      ))));
+        });
+  }
+}
+
+class ComingSoonMoviesList extends StatelessWidget {
+  const ComingSoonMoviesList({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: moviesComingSoon.length,
+        itemBuilder: (BuildContext context, int index) {
+          // final movie = movies[index];
+          return Padding(
+              padding: const EdgeInsets.all(10),
+              child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: SizedBox(
+                      width: 150,
+                      height: 200,
+                      // child: Image(
+                      //     image: AssetImage(movies[index].poster),
+                      //     fit: BoxFit.cover),
+                      child: Card(
+                        child: ClipRRect(
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(4)),
+                            child: SizedBox(
+                              width: 150,
+                              height: double.minPositive,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Image(
+                                    image: AssetImage(
+                                        moviesComingSoon[index].poster),
+                                    height: 200,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8),
+                                    child: Text(
+                                      moviesComingSoon[index].title,
+                                      style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )),
+                      ))));
+        });
+  }
+}
+
+class HomeMovieTabs extends StatelessWidget {
+  const HomeMovieTabs({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return const SizedBox(
+        width: double.infinity,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            TabBar(
+              tabAlignment: TabAlignment.start,
+              isScrollable: true,
+              labelStyle: TextStyle(
+                  fontSize: 18.0, fontFamily: 'Family Name'), //For Selected tab
+              unselectedLabelStyle: TextStyle(
+                  fontSize: 18.0,
+                  fontFamily: 'Family Name'), //For Un-selected Tabs
+              tabs: <Widget>[
+                Tab(
+                  text: "Đang chiếu",
+                ),
+                Tab(
+                  text: "Sắp chiếu",
+                )
+              ],
+            ),
+            Expanded(
+              child: TabBarView(
+                children: <Widget>[
+                  // color: Colors.green,
+                  // call another widget here
+                  SizedBox(
+                    height: 500,
+                    width: double.infinity,
+                    child: PresentMoviesList(),
+                  ),
+                  SizedBox(
+                    height: 500,
+                    width: double.infinity,
+                    child: ComingSoonMoviesList(),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ));
+  }
+}
+
 class SampleItemListView extends StatelessWidget {
   const SampleItemListView({
     super.key,
@@ -76,6 +254,7 @@ class SampleItemListView extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 20),
+                const TabbedContainer(),
               ],
             ),
           ),
