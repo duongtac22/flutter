@@ -35,42 +35,36 @@ class PresentMoviesList extends StatelessWidget {
         itemCount: movies.length,
         itemBuilder: (BuildContext context, int index) {
           // final movie = movies[index];
-          return Padding(
+          return Container(
               padding: const EdgeInsets.all(10),
               child: ClipRRect(
                   borderRadius: BorderRadius.circular(8),
                   child: SizedBox(
-                      width: 150,
+                      width: 200,
                       height: 200,
                       // child: Image(
                       //     image: AssetImage(movies[index].poster),
                       //     fit: BoxFit.cover),
-                      child: Card(
-                        child: ClipRRect(
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(4)),
-                            child: SizedBox(
-                              width: 150,
-                              height: double.minPositive,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Image(
-                                    image: AssetImage(movies[index].poster),
-                                    height: 200,
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8),
-                                    child: Text(
-                                      movies[index].title,
-                                      style: const TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                ],
+                      child: SizedBox(
+                        width: 200,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Image(
+                              image: AssetImage(movies[index].poster),
+                              fit: BoxFit.fill,
+                              height: 150,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8),
+                              child: Text(
+                                movies[index].title,
+                                style: const TextStyle(
+                                    fontSize: 14, fontWeight: FontWeight.bold),
                               ),
-                            )),
+                            ),
+                          ],
+                        ),
                       ))));
         });
   }
@@ -145,18 +139,23 @@ class HomeMovieTabs extends StatelessWidget {
           children: <Widget>[
             TabBar(
               tabAlignment: TabAlignment.start,
+              labelPadding: EdgeInsetsDirectional.only(end: 24.0),
+              labelColor: Colors.amber,
               isScrollable: true,
               labelStyle: TextStyle(
-                  fontSize: 18.0, fontFamily: 'Family Name'), //For Selected tab
+                  fontSize: 18.0,
+                  fontFamily: 'Family Name',
+                  fontWeight: FontWeight.w500), //For Selected tab
               unselectedLabelStyle: TextStyle(
                   fontSize: 18.0,
-                  fontFamily: 'Family Name'), //For Un-selected Tabs
+                  fontFamily: 'Family Name',
+                  fontWeight: FontWeight.w500), //For Un-selected Tabs
               tabs: <Widget>[
                 Tab(
-                  text: "Đang chiếu",
+                  text: "ĐANG CHIẾU",
                 ),
                 Tab(
-                  text: "Sắp chiếu",
+                  text: "SẮP CHIẾU",
                 )
               ],
             ),
@@ -165,16 +164,17 @@ class HomeMovieTabs extends StatelessWidget {
                 children: <Widget>[
                   // color: Colors.green,
                   // call another widget here
-                  SizedBox(
-                    height: 500,
-                    width: double.infinity,
+                  Expanded(
                     child: PresentMoviesList(),
                   ),
-                  SizedBox(
-                    height: 500,
-                    width: double.infinity,
+                  Expanded(
                     child: ComingSoonMoviesList(),
                   ),
+                  // SizedBox(
+                  //   height: 500,
+                  //   width: double.infinity,
+                  //   child: ComingSoonMoviesList(),
+                  // ),
                 ],
               ),
             ),
