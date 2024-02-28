@@ -30,42 +30,41 @@ class PresentMoviesList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
+    return ListView.separated(
         scrollDirection: Axis.horizontal,
+        shrinkWrap: true,
         itemCount: movies.length,
+        separatorBuilder: (BuildContext context, int index) {
+          return const SizedBox(width: 10);
+        },
         itemBuilder: (BuildContext context, int index) {
           // final movie = movies[index];
-          return Container(
-              padding: const EdgeInsets.all(10),
-              child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: SizedBox(
-                      width: 200,
-                      height: 200,
-                      // child: Image(
-                      //     image: AssetImage(movies[index].poster),
-                      //     fit: BoxFit.cover),
-                      child: SizedBox(
-                        width: 200,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Image(
-                              image: AssetImage(movies[index].poster),
-                              fit: BoxFit.fill,
-                              height: 150,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8),
-                              child: Text(
-                                movies[index].title,
-                                style: const TextStyle(
-                                    fontSize: 14, fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ))));
+          return GestureDetector(
+            child: SizedBox(
+              width: 150,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Image(
+                      image: AssetImage(movies[index].poster),
+                      width: 150,
+                      height: 180,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    movies[index].title,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+            ),
+          );
         });
   }
 }
@@ -82,44 +81,33 @@ class ComingSoonMoviesList extends StatelessWidget {
         itemCount: moviesComingSoon.length,
         itemBuilder: (BuildContext context, int index) {
           // final movie = movies[index];
-          return Padding(
+          return Container(
               padding: const EdgeInsets.all(10),
-              child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: SizedBox(
-                      width: 150,
-                      height: 200,
-                      // child: Image(
-                      //     image: AssetImage(movies[index].poster),
-                      //     fit: BoxFit.cover),
-                      child: Card(
-                        child: ClipRRect(
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(4)),
-                            child: SizedBox(
-                              width: 150,
-                              height: double.minPositive,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Image(
-                                    image: AssetImage(
-                                        moviesComingSoon[index].poster),
-                                    height: 200,
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8),
-                                    child: Text(
-                                      moviesComingSoon[index].title,
-                                      style: const TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            )),
-                      ))));
+              width: 200,
+              child: Wrap(
+                children: [
+                  SizedBox(
+                    width: 200,
+                    child: ClipRRect(
+                      borderRadius: const BorderRadius.all(Radius.circular(8)),
+                      child: Image(
+                        image: AssetImage(moviesComingSoon[index].poster),
+                        fit: BoxFit.fitWidth,
+                        width: 200,
+                        height: 160,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: Text(
+                      moviesComingSoon[index].title,
+                      style: const TextStyle(
+                          fontSize: 14, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ],
+              ));
         });
   }
 }
@@ -165,10 +153,16 @@ class HomeMovieTabs extends StatelessWidget {
                   // color: Colors.green,
                   // call another widget here
                   Expanded(
-                    child: PresentMoviesList(),
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 16),
+                      child: PresentMoviesList(),
+                    ),
                   ),
                   Expanded(
-                    child: ComingSoonMoviesList(),
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 16),
+                      child: ComingSoonMoviesList(),
+                    ),
                   ),
                   // SizedBox(
                   //   height: 500,
