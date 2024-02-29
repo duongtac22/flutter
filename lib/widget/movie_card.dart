@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tutorial/models/movie.dart';
 
 class MovieCard extends StatelessWidget {
-  final MovieModel movieModel;
-  const MovieCard({required this.movieModel, super.key});
+  final MovieModel2 movieModel2;
+  const MovieCard({required this.movieModel2, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,8 +16,8 @@ class MovieCard extends StatelessWidget {
           children: <Widget>[
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
-              child: Image(
-                image: AssetImage(movieModel.poster),
+              child: Image.network(
+                movieModel2.imageUrl,
                 width: 150,
                 height: 180,
                 fit: BoxFit.cover,
@@ -25,7 +25,7 @@ class MovieCard extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             Text(
-              movieModel.title,
+              movieModel2.title,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tutorial/models/movie.dart';
+import 'package:flutter_tutorial/services/movies.dart';
+import 'package:flutter_tutorial/widget/movie_card.dart';
+import 'package:flutter_tutorial/widget/movie_card_container.dart';
 
 import '../../dummy_data.dart';
 import '../settings/settings_view.dart';
@@ -177,6 +180,73 @@ class HomeMovieTabs extends StatelessWidget {
   }
 }
 
+class MovieListScreen extends StatefulWidget {
+  const MovieListScreen({super.key});
+  @override
+  // ignore: library_private_types_in_public_api
+  _MovieListScreenState createState() => _MovieListScreenState();
+}
+
+class _MovieListScreenState extends State<MovieListScreen> {
+  List<MovieCard>? _movieCards;
+
+  Future<void> loadData() async {
+    MovieModels movieModel = MovieModels();
+    _movieCards = await movieModel.getMovies(moviesType: "popular");
+  }
+
+  // init state
+  @override
+  void initState() {
+    super.initState();
+    () async {
+      setState(() {
+        loadData();
+      });
+    }();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  // build function
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        // body: Center(
+        //   // FutureBuilder
+        //   child: FutureBuilder(
+        //     future: loadData(),
+        //     builder: (BuildContext context, AsyncSnapshot snapshot) {
+        //       if (snapshot.connectionState == ConnectionState.done) {
+        //         log(snapshot.data);
+        //       } else {
+        //         return const CircularProgressIndicator();
+        //       }
+        //     },
+        //   ),
+        // ),
+        child: (_movieCards == null)
+            ? const CircularProgressIndicator()
+            : (_movieCards!.isEmpty)
+                ? const Center(child: Text("asldkajsd "))
+                : MovieCardContainer(movieCards: _movieCards!));
+  }
+
+  Widget buildMovies(List<MovieModel2> movies) {
+    // ListView Builder to show data in a list
+    return ListView.builder(
+      itemCount: movies.length,
+      itemBuilder: (context, index) {
+        final movies0 = movies[index];
+        return MovieCard(movieModel2: movies0);
+      },
+    );
+  }
+}
+
 class SampleItemListView extends StatelessWidget {
   const SampleItemListView({
     super.key,
@@ -249,6 +319,7 @@ class SampleItemListView extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
                 const TabbedContainer(),
+                const MovieListScreen(),
               ],
             ),
           ),

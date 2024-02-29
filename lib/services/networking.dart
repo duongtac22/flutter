@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:http/http.dart' as http;
 
@@ -12,7 +13,7 @@ class NetworkHelper {
     if (response.statusCode == 200) {
       return jsonDecode(response.body);
     } else {
-      print(response.statusCode);
+      log(response.statusCode);
     }
   }
 }
