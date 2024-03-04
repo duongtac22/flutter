@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tutorial/models/movie.dart';
+import 'package:flutter_tutorial/screen/detail_movie.dart';
 
 class MovieCard extends StatelessWidget {
   final MovieModel2 movieModel2;
@@ -8,26 +10,44 @@ class MovieCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      child: SizedBox(
-        width: 150,
+      onTap: (){
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => DetailMovieScreen( id : movieModel2.id , title: movieModel2.title,))
+        );
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.grey[400],
+          borderRadius: BorderRadius.circular(12),
+        ),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: Image.network(
-                movieModel2.imageUrl,
-                width: 150,
-                height: 180,
+              borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(12), topRight: Radius.circular(12)),
+              child: CachedNetworkImage(
+                height: 170,
+                width: double.infinity,
                 fit: BoxFit.cover,
+                placeholder: (context, url) => const Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [CircularProgressIndicator()],
+                ),
+                imageUrl: movieModel2.imageUrl,
+                errorWidget: (context, url, error) => const Column(
+                  children: [CircularProgressIndicator()],
+                ),
               ),
             ),
-            const SizedBox(height: 10),
-            Text(
-              movieModel2.title,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: Text(
+                movieModel2.title,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+              ),
             ),
           ],
         ),

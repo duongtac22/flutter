@@ -29,3 +29,19 @@ class MovieModel2 {
     required this.rating,
   });
 }
+
+class MovieDetailParams {
+  final String id;
+  final String title;
+  const MovieDetailParams(this.id, this.title);
+}
+
+class MovieDetail {
+  final String title;
+  final String backgroundURL;
+  final String overview;
+  MovieDetail(
+      {required this.title,
+      required this.backgroundURL,
+      required this.overview});
+}

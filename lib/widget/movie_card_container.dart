@@ -11,9 +11,17 @@ class MovieCardContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 16),
-      child: Wrap(spacing: 10, children: movieCards),
-    );
+    return GridView.builder(
+        itemCount: movieCards.length,
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3,
+            crossAxisSpacing: 8.0,
+            mainAxisSpacing: 8.0,
+            mainAxisExtent: 220.0),
+        itemBuilder: (BuildContext context, int index) {
+          return MovieCard(movieModel2: movieCards[index].movieModel2);
+        });
   }
 }
