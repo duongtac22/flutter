@@ -274,10 +274,14 @@ class SampleItemListView extends StatelessWidget {
       home: Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
-            title: const Text('Flutter Movie App'),
+            title: const Text(
+              'Flutter Movie App',
+              style: TextStyle(color: Colors.white),
+            ),
             actions: [
               IconButton(
                 icon: const Icon(Icons.settings),
+                color: Colors.white,
                 onPressed: () {
                   // Navigate to the settings page. If the user leaves and returns
                   // to the app after it has been killed while running in the
@@ -287,6 +291,7 @@ class SampleItemListView extends StatelessWidget {
                 },
               ),
             ],
+            backgroundColor: Colors.blue,
           ),
 
           // To work with lists that may contain a large number of items, it’s best
@@ -295,45 +300,45 @@ class SampleItemListView extends StatelessWidget {
           // In contrast to the default ListView constructor, which requires
           // building all Widgets up front, the ListView.builder constructor lazily
           // builds Widgets as they’re scrolled into view.
-          body: SingleChildScrollView(
+          body: const SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.all(10),
+              padding: EdgeInsets.all(10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     'Movies',
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 10),
-                  SizedBox(
-                    height: 200,
-                    width: double.infinity,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: movies.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        // final movie = movies[index];
-                        return Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: ClipRRect(
-                                borderRadius: BorderRadius.circular(8),
-                                child: SizedBox(
-                                  width: 150,
-                                  height: 200,
-                                  child: Image(
-                                      image: AssetImage(movies[index].poster),
-                                      fit: BoxFit.cover),
-                                )));
-                      },
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  const TabbedContainer(),
-                  const MovieListScreen(),
+                  SizedBox(height: 10),
+                  // SizedBox(
+                  //   height: 200,
+                  //   width: double.infinity,
+                  //   child: ListView.builder(
+                  //     scrollDirection: Axis.horizontal,
+                  //     itemCount: movies.length,
+                  //     itemBuilder: (BuildContext context, int index) {
+                  //       // final movie = movies[index];
+                  //       return Padding(
+                  //           padding: const EdgeInsets.all(10),
+                  //           child: ClipRRect(
+                  //               borderRadius: BorderRadius.circular(8),
+                  //               child: SizedBox(
+                  //                 width: 150,
+                  //                 height: 200,
+                  //                 child: Image(
+                  //                     image: AssetImage(movies[index].poster),
+                  //                     fit: BoxFit.cover),
+                  //               )));
+                  //     },
+                  //   ),
+                  // ),
+                  // const SizedBox(height: 20),
+                  // const TabbedContainer(),
+                  MovieListScreen(),
                 ],
               ),
             ),

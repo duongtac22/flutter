@@ -10,11 +10,14 @@ class MovieCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => DetailMovieScreen( id : movieModel2.id , title: movieModel2.title,))
-        );
+            context,
+            MaterialPageRoute(
+                builder: (context) => DetailMovieScreen(
+                      id: movieModel2.id,
+                      title: movieModel2.title,
+                    )));
       },
       child: Container(
         decoration: BoxDecoration(
@@ -27,7 +30,7 @@ class MovieCard extends StatelessWidget {
               borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(12), topRight: Radius.circular(12)),
               child: CachedNetworkImage(
-                height: 170,
+                height: 220,
                 width: double.infinity,
                 fit: BoxFit.cover,
                 placeholder: (context, url) => const Column(
@@ -46,7 +49,8 @@ class MovieCard extends StatelessWidget {
                 movieModel2.title,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                style:
+                    const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
               ),
             ),
           ],

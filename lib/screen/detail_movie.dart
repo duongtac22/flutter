@@ -48,37 +48,46 @@ class _DetailMovieScreenState extends State<DetailMovieScreen> {
         title: Text('Movie name : ${movieDetails?.title ?? ''}'),
       ),
       body: (movieDetails?.title == null)
-          ? const CircularProgressIndicator()
+          ? const Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircularProgressIndicator(),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text('Loading...'),
+                ],
+              ),
+            )
           : SingleChildScrollView(
-              child: Container(
-                child: Column(
-                  children: [
-                    Image.network(
-                      '$apiImageURL${movieDetails?.backgroundURL}',
-                      width: double.infinity,
-                      height: 350,
-                      fit: BoxFit.cover,
+              child: Column(
+                children: [
+                  Image.network(
+                    '$apiImageURL${movieDetails?.backgroundURL}',
+                    width: double.infinity,
+                    height: 350,
+                    fit: BoxFit.cover,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Text(
+                      movieDetails?.title ?? '',
+                      style: const TextStyle(
+                          fontSize: 24, fontWeight: FontWeight.bold),
                     ),
-                    Padding(
-                      padding: EdgeInsets.all(16),
-                      child: Text(
-                        movieDetails?.title ?? '',
-                        style: TextStyle(
-                            fontSize: 24, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    if (movieDetails!.overview != "")
-                      Container(
-                        child: Padding(
-                          padding: EdgeInsets.all(16),
-                          child: Text(
-                            movieDetails?.overview ?? '',
-                            style: TextStyle(fontSize: 18),
-                          ),
+                  ),
+                  if (movieDetails!.overview != "")
+                    Container(
+                      child: Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Text(
+                          movieDetails?.overview ?? '',
+                          style: const TextStyle(fontSize: 18),
                         ),
                       ),
-                  ],
-                ),
+                    ),
+                ],
               ),
             ),
     );

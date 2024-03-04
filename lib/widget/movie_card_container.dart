@@ -16,10 +16,10 @@ class MovieCardContainer extends StatelessWidget {
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
-            crossAxisSpacing: 8.0,
-            mainAxisSpacing: 8.0,
-            mainAxisExtent: 220.0),
+            crossAxisCount: 2,
+            crossAxisSpacing: 12.0,
+            mainAxisSpacing: 12.0,
+            mainAxisExtent: 280.0),
         itemBuilder: (BuildContext context, int index) {
           return MovieCard(movieModel2: movieCards[index].movieModel2);
         });
