@@ -78,13 +78,11 @@ class _DetailMovieScreenState extends State<DetailMovieScreen> {
                     ),
                   ),
                   if (movieDetails!.overview != "")
-                    Container(
-                      child: Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: Text(
-                          movieDetails?.overview ?? '',
-                          style: const TextStyle(fontSize: 18),
-                        ),
+                    Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Text(
+                        movieDetails?.overview ?? '',
+                        style: const TextStyle(fontSize: 18),
                       ),
                     ),
                 ],
