@@ -10,10 +10,10 @@ class HomeScreen extends StatefulWidget {
   static const routeName = '/';
   @override
   // ignore: library_private_types_in_public_api
-  _HomeScreenState createState() => _HomeScreenState();
+  HomeScreenState createState() => HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class HomeScreenState extends State<HomeScreen> {
   List<MovieCard>? _movieCards;
 
   Future<void> loadData() async {
@@ -35,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // loadData();
+    loadData();
   }
 
   @override
@@ -46,6 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
   // build function
   @override
   Widget build(BuildContext context) {
+    print('re run Home Screen');
     return Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: Colors.indigo[500],
@@ -58,41 +59,43 @@ class _HomeScreenState extends State<HomeScreen> {
         // builds Widgets as they’re scrolled into view.
         body: SafeArea(
             child: SingleChildScrollView(
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(
-                  height: 32,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 24, right: 24),
-                  child: Text(
-                    'What do you want to watch?',
-                    style: GoogleFonts.roboto(
-                      fontSize: 24,
-                      color: Colors.white,
-                      height: 1,
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 24,
-                ),
-                CustomSearchAppbarContent(
-                    onChanged: (value) => print(value),
-                    onEditingComplete: () => print("editing complete")),
-                const SizedBox(
-                  height: 24,
-                ),
-                Padding(
-                    padding: const EdgeInsets.only(left: 24, right: 24),
-                    child: (_movieCards == null)
-                        ? const CircularProgressIndicator()
-                        : (_movieCards!.isEmpty)
-                            ? const Center(child: Text("asldkajsd "))
-                            : MovieCardContainer(movieCards: _movieCards!)),
-              ]),
+          child: (_movieCards == null)
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                      const SizedBox(
+                        height: 32,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 24, right: 24),
+                        child: Text(
+                          'What do you want to watch?',
+                          style: GoogleFonts.roboto(
+                            fontSize: 24,
+                            color: Colors.white,
+                            height: 1,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 24,
+                      ),
+                      CustomSearchAppbarContent(
+                          onChanged: (value) => print(value),
+                          onEditingComplete: () => print("editing complete")),
+                      const SizedBox(
+                        height: 24,
+                      ),
+                      Padding(
+                          padding: const EdgeInsets.only(left: 24, right: 24),
+                          child: (_movieCards!.isEmpty)
+                              ? const Center(child: Text("Empty List "))
+                              : MovieCardContainer(movieCards: _movieCards!)),
+                    ]),
         )));
   }
 }
