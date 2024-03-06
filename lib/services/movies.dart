@@ -63,12 +63,12 @@ class MovieModels {
   Future<MovieDetail> getMovieDetail({required String movieId}) async {
     var data = await _fetchMovie(
         url: 'https://api.themoviedb.org/3/movie/$movieId?api_key=$apiKey');
-    log(data);
-    return MovieDetail(
-        backgroundURL: 'aaaaa', title: 'title', overview: 'overview');
-    // return Future.value(MovieDetail(
-    //     backgroundURL: data["backdrop_path"],
-    //     title: data["title"],
-    //     overview: data["overview"]));
+    // log(data);
+    // return MovieDetail(
+    //     backgroundURL: 'aaaaa', title: 'title', overview: 'overview');
+    return Future.value(MovieDetail(
+        backgroundURL: data["backdrop_path"],
+        title: data["title"],
+        overview: data["overview"]));
   }
 }

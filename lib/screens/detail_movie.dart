@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_tutorial/common/settings.dart';
 import 'package:flutter_tutorial/models/movie.dart';
@@ -25,6 +27,7 @@ class _DetailMovieScreenState extends State<DetailMovieScreen> {
     super.initState();
     () async {
       MovieDetail temp = await widget.loadDetail();
+      log('temp : $temp');
       setState(() {
         movieDetails = temp;
       });
@@ -43,6 +46,7 @@ class _DetailMovieScreenState extends State<DetailMovieScreen> {
 
   @override
   Widget build(BuildContext context) {
+    log('$movieDetails');
     return Scaffold(
       appBar: AppBar(
         title: Text('Movie name : ${movieDetails?.title ?? ''}'),

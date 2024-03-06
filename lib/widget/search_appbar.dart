@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 
 class CustomSearchAppbarContent extends StatelessWidget {
   final void Function()? onEditingComplete;
+  final void Function(String)? onSubmitted;
   final void Function(String)? onChanged;
 
   const CustomSearchAppbarContent(
-      {this.onChanged, this.onEditingComplete, super.key});
+      {this.onChanged, this.onEditingComplete, this.onSubmitted, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +23,7 @@ class CustomSearchAppbarContent extends StatelessWidget {
               title: TextField(
                 onChanged: onChanged,
                 onEditingComplete: onEditingComplete,
+                onSubmitted: onSubmitted,
                 style: const TextStyle(
                   fontSize: 14,
                   color: Color(0xFFBEBEBE),
