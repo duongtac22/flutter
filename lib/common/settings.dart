@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tutorial/screen/home.dart';
+import 'package:flutter_tutorial/screens/home_screen.dart';
 
 const apiURL = "https://api.themoviedb.org/3/movie";
 const apiImageURL = "https://image.tmdb.org/t/p/w300";

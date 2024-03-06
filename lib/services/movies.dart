@@ -1,8 +1,10 @@
+import 'dart:async';
+import 'dart:developer';
+
 import 'package:flutter_tutorial/common/settings.dart';
 import 'package:flutter_tutorial/models/movie.dart';
+import 'package:flutter_tutorial/services/networking.dart';
 import 'package:flutter_tutorial/widget/movie_card.dart';
-
-import 'networking.dart';
 
 enum MovieParams {
   popular,
@@ -15,14 +17,28 @@ class MovieModels {
     NetworkHelper networkHelper = NetworkHelper(Uri.parse(url));
     var data = await networkHelper.getData();
     return data;
+    // final response = await http.get(Uri.parse('url'));
+
+    // if (response.statusCode == 200) {
+    //   // If the server did return a 200 OK response,
+    //   // then parse the JSON.
+    //   return MovieModel2.fromJson(
+    //       jsonDecode(response.body) as Map<String, dynamic>);
+    // } else {
+    //   // If the server did not return a 200 OK response,
+    //   // then throw an exception.
+    //   throw Exception('Failed to load album');
+    // }
   }
 
-  Future<List<MovieCard>> getMovies({required String moviesType}) async {
+  Future<List<MovieCard>> getMovies({required moviesType}) async {
+    log('loadData : $moviesType');
     List<MovieCard> temp = [];
     // String mTypString =
     //     moviesType.toString().substring(14, moviesType.toString().length);
     var data = await _fetchMovie(
         url: 'https://api.themoviedb.org/3/movie/$moviesType?api_key=$apiKey');
+
     for (var item in data["results"]) {
       temp.add(
         MovieCard(
@@ -47,9 +63,12 @@ class MovieModels {
   Future<MovieDetail> getMovieDetail({required String movieId}) async {
     var data = await _fetchMovie(
         url: 'https://api.themoviedb.org/3/movie/$movieId?api_key=$apiKey');
-    return Future.value(MovieDetail(
-        backgroundURL: data["backdrop_path"],
-        title: data["title"],
-        overview: data["overview"]));
+    log(data);
+    return MovieDetail(
+        backgroundURL: 'aaaaa', title: 'title', overview: 'overview');
+    // return Future.value(MovieDetail(
+    //     backgroundURL: data["backdrop_path"],
+    //     title: data["title"],
+    //     overview: data["overview"]));
   }
 }
