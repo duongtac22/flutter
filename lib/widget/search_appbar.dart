@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 
 class CustomSearchAppbarContent extends StatelessWidget {
-  final void Function()? onEditingComplete;
   final void Function(String)? onSubmitted;
   final void Function(String)? onChanged;
 
   const CustomSearchAppbarContent(
-      {this.onChanged, this.onEditingComplete, this.onSubmitted, super.key});
+      {this.onChanged, this.onSubmitted, super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return GestureDetector(
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: Padding(
+
         padding: const EdgeInsets.only(left: 24, right: 24),
         child: Container(
           height: 60,
@@ -22,7 +24,6 @@ class CustomSearchAppbarContent extends StatelessWidget {
               leading: const Icon(Icons.search),
               title: TextField(
                 onChanged: onChanged,
-                onEditingComplete: onEditingComplete,
                 onSubmitted: onSubmitted,
                 style: const TextStyle(
                   fontSize: 14,
@@ -30,9 +31,9 @@ class CustomSearchAppbarContent extends StatelessWidget {
                   height: 1,
                 ),
                 cursorColor: Colors.white,
-                autofocus: true,
+                autofocus: false,
                 autocorrect: false,
-                textInputAction: TextInputAction.search,
+                // textInputAction: TextInputAction.search,
                 decoration: const InputDecoration(
                   border: InputBorder.none,
                   focusedBorder: InputBorder.none,
@@ -43,6 +44,6 @@ class CustomSearchAppbarContent extends StatelessWidget {
               ),
             ),
           ),
-        ));
+        )));
   }
 }

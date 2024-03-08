@@ -3,9 +3,11 @@ import 'package:flutter_tutorial/widget/movie_card.dart';
 
 class MovieCardContainer extends StatelessWidget {
   final List<MovieCard> movieCards;
+  // final ScrollController scrollController;
 
   const MovieCardContainer({
     required this.movieCards,
+    // required this.scrollController,
     super.key,
   });
 

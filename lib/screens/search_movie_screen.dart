@@ -1,30 +1,40 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+
+import '../services/movies.dart';
+import '../widget/movie_card.dart';
+import '../widget/movie_card_container.dart';
 
 class SearchMovieScreen extends StatefulWidget {
   final String searchQuery;
   const SearchMovieScreen({required this.searchQuery, super.key});
   @override
-  // ignore: library_private_types_in_public_api
   SearchMovieScreenState createState() => SearchMovieScreenState();
 }
 
 class SearchMovieScreenState extends State<SearchMovieScreen> {
-  // List<MovieCard>? _movieCards;
-
-  // final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  // demo url https://api.themoviedb.org/3/search/movie
+  List<MovieCard>? _movieCards;
 
   // bool _isLoading = true;
 
-  // Future<void> loadData() async {
-  //   MovieModels movieModel = MovieModels();
-  //   _movieCards = await movieModel.getMovies(moviesType: "popular");
-  //   log('movieCards day : $_movieCards');
-  //   setState(() {});
-  // }
+  Future<void> loadData(String movieName) async {
+    MovieModels movieModel = MovieModels();
+    _movieCards = await movieModel.searchMovies(searchName: movieName);
+    log('search movieCards day : $_movieCards');
+    setState(() {});
+  }
+
   // init state
   @override
   void initState() {
     super.initState();
+    () async {
+      setState(() {
+        loadData(widget.searchQuery);
+      });
+    }();
   }
 
   // @override
@@ -44,9 +54,30 @@ class SearchMovieScreenState extends State<SearchMovieScreen> {
   // build function
   @override
   Widget build(BuildContext context) {
-    return Container(
-      // show the search query in the screen for now
-      child: Text(widget.searchQuery),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Search movie : ${widget.searchQuery}'),
+      ),
+      body: SafeArea(
+          child: SingleChildScrollView(
+        child: (_movieCards == null)
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                    const SizedBox(
+                      height: 24,
+                    ),
+                    Padding(
+                        padding: const EdgeInsets.only(left: 24, right: 24),
+                        child: (_movieCards!.isEmpty)
+                            ? const Center(child: Text("Empty List "))
+                            : MovieCardContainer(movieCards: _movieCards!)),
+                  ]),
+      )),
     );
   }
 }

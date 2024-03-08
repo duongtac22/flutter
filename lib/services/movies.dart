@@ -17,28 +17,14 @@ class MovieModels {
     NetworkHelper networkHelper = NetworkHelper(Uri.parse(url));
     var data = await networkHelper.getData();
     return data;
-    // final response = await http.get(Uri.parse('url'));
-
-    // if (response.statusCode == 200) {
-    //   // If the server did return a 200 OK response,
-    //   // then parse the JSON.
-    //   return MovieModel2.fromJson(
-    //       jsonDecode(response.body) as Map<String, dynamic>);
-    // } else {
-    //   // If the server did not return a 200 OK response,
-    //   // then throw an exception.
-    //   throw Exception('Failed to load album');
-    // }
   }
 
-  Future<List<MovieCard>> getMovies({required moviesType}) async {
-    log('loadData : $moviesType');
+  Future<List<MovieCard>> getMovies({required moviesType, page = 1}) async {
     List<MovieCard> temp = [];
-    // String mTypString =
-    //     moviesType.toString().substring(14, moviesType.toString().length);
     var data = await _fetchMovie(
-        url: 'https://api.themoviedb.org/3/movie/$moviesType?api_key=$apiKey');
-
+        url:
+            'https://api.themoviedb.org/3/movie/$moviesType?api_key=$apiKey&page=$page');
+    log('data ${data.runtimeType}');
     for (var item in data["results"]) {
       temp.add(
         MovieCard(
@@ -55,7 +41,33 @@ class MovieModels {
         ),
       );
     }
-    // log temp to see the data structure
+
+    return Future.value(temp);
+  }
+
+  Future<List<MovieCard>> searchMovies({required searchName}) async {
+    log('loadData : $searchName');
+    List<MovieCard> temp = [];
+    var data = await _fetchMovie(
+        url:
+            '$apiSearchMovie?api_key=$apiKey&language=en-US&page=1&include_adult=false&query=$searchName');
+
+    for (var item in data["results"]) {
+      temp.add(
+        MovieCard(
+          movieModel2: MovieModel2(
+            title: item["title"],
+            imageUrl: "$apiImageURL${item["poster_path"]}",
+            overview: item["overview"],
+            year: (item["release_date"].toString().length > 4)
+                ? item["release_date"].toString().substring(0, 4)
+                : "",
+            id: item["id"].toString(),
+            rating: item["vote_average"].toDouble(),
+          ),
+        ),
+      );
+    }
 
     return Future.value(temp);
   }
@@ -67,7 +79,7 @@ class MovieModels {
     // return MovieDetail(
     //     backgroundURL: 'aaaaa', title: 'title', overview: 'overview');
     return Future.value(MovieDetail(
-        backgroundURL: data["backdrop_path"],
+        backgroundURL: data["poster_path"],
         title: data["title"],
         overview: data["overview"]));
   }

@@ -28,27 +28,7 @@ class MovieModel2 {
     required this.overview,
     required this.rating,
   });
-  // factory MovieModel2.fromJson(Map<String, dynamic> json) {
-  //   return switch (json) {
-  //     {
-  //       'id': String id,
-  //       'title': String title,
-  //       'imageUrl': String imageUrl,
-  //       'year': String year,
-  //       'overview': String overview,
-  //       'rating': double rating,
-  //     } =>
-  //       MovieModel2(
-  //         id: id,
-  //         title: title,
-  //         imageUrl: imageUrl,
-  //         year: year,
-  //         overview: overview,
-  //         rating: rating,
-  //       ),
-  //     _ => throw const FormatException('Failed to load album.'),
-  //   };
-  // }
+
 }
 
 class MovieDetailParams {
