@@ -3,10 +3,10 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_tutorial/screens/search_movie_screen.dart';
 import 'package:flutter_tutorial/services/movies.dart';
+import 'package:flutter_tutorial/widget/home_header.dart';
 import 'package:flutter_tutorial/widget/movie_card.dart';
 import 'package:flutter_tutorial/widget/movie_card_container.dart';
 import 'package:flutter_tutorial/widget/search_appbar.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -61,59 +61,48 @@ class HomeScreenState extends State<HomeScreen> {
   // build function
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
+
     return Scaffold(
         key: _scaffoldKey,
         resizeToAvoidBottomInset: false,
-        backgroundColor: Colors.indigo[500],
         body: SafeArea(
             child: SingleChildScrollView(
-          controller: _scrollController,
-          child: (temp.isEmpty)
-              ? const Center(
-                  child: CircularProgressIndicator(),
-                )
-              : Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                      const SizedBox(
-                        height: 32,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 24, right: 24),
-                        child: Text(
-                          'What do you want to watch?',
-                          style: GoogleFonts.roboto(
-                            fontSize: 24,
-                            color: Colors.white,
-                            height: 1,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 24,
-                      ),
-                      CustomSearchAppbarContent(
-                        onSubmitted: (value) {
-                          if (value.isEmpty) return;
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => SearchMovieScreen(
-                                        searchQuery: value,
-                                      )));
-                        },
-                      ),
-                      const SizedBox(
-                        height: 24,
-                      ),
-                      Padding(
-                          padding: const EdgeInsets.only(left: 24, right: 24),
-                          child: (temp.isEmpty)
-                              ? const Center(child: Text("Empty List "))
-                              : MovieCardContainer(movieCards: temp)),
-                      const SizedBox(height: 24),
-                    ]),
-        )));
+                controller: _scrollController,
+                child: Column(children: [
+                  HomeHeader(size: size),
+                  (temp.isEmpty)
+                      ? const Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                              Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 24, vertical: 24),
+                                child: CustomSearchAppbarContent(
+                                  onSubmitted: (value) {
+                                    if (value.isEmpty) return;
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                SearchMovieScreen(
+                                                  searchQuery: value,
+                                                )));
+                                  },
+                                ),
+                              ),
+                              Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 24),
+                                  child: (temp.isEmpty)
+                                      ? const Center(child: Text("Empty List "))
+                                      : MovieCardContainer(movieCards: temp)),
+                              const SizedBox(height: 24)
+                            ]),
+                ]))));
   }
 }

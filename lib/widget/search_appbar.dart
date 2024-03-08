@@ -11,9 +11,6 @@ class CustomSearchAppbarContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-        child: Padding(
-
-        padding: const EdgeInsets.only(left: 24, right: 24),
         child: Container(
           height: 60,
           decoration: BoxDecoration(
@@ -44,6 +41,6 @@ class CustomSearchAppbarContent extends StatelessWidget {
               ),
             ),
           ),
-        )));
+        ));
   }
 }
