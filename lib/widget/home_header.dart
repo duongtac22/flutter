@@ -13,7 +13,7 @@ class HomeHeader extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 24, left: 24, right: 24),
       child: SizedBox(
-        height: size.height / 10,
+        height: size.height / 12,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -23,7 +23,7 @@ class HomeHeader extends StatelessWidget {
                   fontSize: 30,
                 )),
             CircleAvatar(
-              radius: size.height / 24,
+              radius: size.height / 36,
               backgroundImage: const AssetImage('assets/images/profile.png'),
             )
           ],
