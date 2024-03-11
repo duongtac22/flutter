@@ -28,7 +28,6 @@ class MovieModel2 {
     required this.overview,
     required this.rating,
   });
-
 }
 
 class MovieDetailParams {
@@ -45,4 +44,10 @@ class MovieDetail {
       {required this.title,
       required this.backgroundURL,
       required this.overview});
+}
+
+class MovieGenre {
+  final String id;
+  final String name;
+  MovieGenre({required this.id, required this.name});
 }

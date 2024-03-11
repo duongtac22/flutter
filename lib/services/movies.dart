@@ -9,7 +9,7 @@ import 'package:flutter_tutorial/widget/movie_card.dart';
 enum MovieParams {
   popular,
   upcoming,
-  // top_rated,
+  top_rated,
 }
 
 class MovieModels {
@@ -82,5 +82,22 @@ class MovieModels {
         backgroundURL: data["poster_path"],
         title: data["title"],
         overview: data["overview"]));
+  }
+
+  Future<List<MovieGenre>> getMovieGenre({required String url}) async {
+    List<MovieGenre> temp = [];
+
+    var data = await _fetchMovie(url: url);
+
+    for (var item in data["genres"]) {
+      temp.add(
+        MovieGenre(
+          id: item["id"].toString(),
+          name: item["name"],
+        ),
+      );
+    }
+
+    return Future.value(temp);
   }
 }

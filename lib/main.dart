@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           primarySwatch: Colors.blue,
           fontFamily: 'roboto',
-          scaffoldBackgroundColor: Color(0xFF0B0F2F),
+          scaffoldBackgroundColor: const Color(0xFF0B0F2F),
           textTheme: Theme.of(context).textTheme.apply(
                 bodyColor: Colors.white,
                 displayColor: Colors.white,

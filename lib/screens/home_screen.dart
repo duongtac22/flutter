@@ -1,8 +1,9 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_tutorial/screens/detail_movie.dart';
+import 'package:flutter_tutorial/common/settings.dart';
+import 'package:flutter_tutorial/models/movie.dart';
 import 'package:flutter_tutorial/screens/search_movie_screen.dart';
 import 'package:flutter_tutorial/services/movies.dart';
+import 'package:flutter_tutorial/widget/carousel_widget.dart';
 import 'package:flutter_tutorial/widget/home_header.dart';
 import 'package:flutter_tutorial/widget/movie_card.dart';
 import 'package:flutter_tutorial/widget/search_appbar.dart';
@@ -18,9 +19,10 @@ class HomeScreenState extends State<HomeScreen> {
   List<MovieCard>? _movieCards;
   List<MovieCard> temp = [];
   // final _scrollController = ScrollController();
-  int _page = 1;
+  final int _page = 1;
+  int selectedGenre = 0;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
+  List<MovieGenre> genres = [];
   // bool _isLoading = true;
 
   Future<void> loadData({String moviesType = 'popular', int page = 1}) async {
@@ -30,14 +32,24 @@ class HomeScreenState extends State<HomeScreen> {
     // log('movieCards day temp: $_movieCards');
     temp.addAll(_movieCards!);
     // debugPrint('temp $temp');
-    setState(() {});
+  }
+
+  Future<void> loadGenres() async {
+    MovieModels movieModel = MovieModels();
+    genres =
+        await movieModel.getMovieGenre(url: '$apiGenreURL?api_key=$apiKey');
+  }
+
+  Future<void> fetchData() async {
+    await loadData();
+    await loadGenres();
   }
 
   // init state
   @override
   void initState() {
     setState(() {
-      loadData();
+      fetchData();
     });
     // _scrollController.addListener(() {
     //   if (_scrollController.position.maxScrollExtent ==
@@ -80,85 +92,108 @@ class HomeScreenState extends State<HomeScreen> {
           //   },
           //   child: const Text('Load More'),
           // ),
-          (temp.isEmpty)
-              ? const Center(
-                  child: CircularProgressIndicator(),
-                )
-              : Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 24, vertical: 24),
-                        child: CustomSearchAppbarContent(
-                          onSubmitted: (value) {
-                            if (value.isEmpty) return;
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => SearchMovieScreen(
-                                          searchQuery: value,
-                                        )));
-                          },
+          Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+                  child: CustomSearchAppbarContent(
+                    onSubmitted: (value) {
+                      if (value.isEmpty) return;
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SearchMovieScreen(
+                                    searchQuery: value,
+                                  )));
+                    },
+                  ),
+                ),
+                SizedBox(
+                  height: size.height / 18,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: genres.length,
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            selectedGenre = index;
+                          });
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.only(left: 16),
+                          alignment: Alignment.center,
+                          width: size.width / 4,
+                          decoration: selectedGenre == index
+                              ? BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  color: Colors.deepPurple)
+                              : BoxDecoration(color: Colors.transparent),
+                          child: Text(
+                            genres[index].name,
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.normal),
+                          ),
                         ),
-                      ),
-                      Padding(
+                      );
+                    },
+                  ),
+                ),
+                (temp.isEmpty)
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 24, vertical: 24),
                         child: (temp.isEmpty)
                             ? const Center(child: Text("Empty List "))
-                            : CarouselSlider(
-                                items: temp
-                                    .map((e) => Builder(builder: (context) {
-                                          return GestureDetector(
-                                            onTap: () {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          DetailMovieScreen(
-                                                            id: e
-                                                                .movieModel2.id,
-                                                            title: e.movieModel2
-                                                                .title,
-                                                          )));
-                                            },
-                                            child: Container(
-                                              width: size.width,
-                                              padding: const EdgeInsets.all(16),
-                                              decoration: BoxDecoration(
-                                                color: Colors.amber,
-                                                borderRadius:
-                                                    BorderRadius.circular(8),
-                                                image: DecorationImage(
-                                                    image: NetworkImage(
-                                                        e.movieModel2.imageUrl),
-                                                    fit: BoxFit.cover),
-                                              ),
-                                            ),
-                                          );
-                                        }))
-                                    .toList(),
-                                options: CarouselOptions(
-                                    autoPlay: true,
-                                    enlargeCenterPage: true,
-                                    height: size.height / 2)),
+                            : CarouselWidget(temp: temp, size: size),
                       ),
-                      // Padding(
-                      //     padding: const EdgeInsets.symmetric(
-                      //         horizontal: 24),
-                      //     child: (temp.isEmpty)
-                      //         ? const Center(child: Text("Empty List "))
-                      //         : MovieCardContainer(movieCards: temp)),
-                      // const SizedBox(height: 24)
-                    ]),
+                (genres.isEmpty)
+                    ? const Center(child: CircularProgressIndicator())
+                    : SizedBox(
+                        height: size.height / 18,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: genres.length,
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  selectedGenre = index;
+                                });
+                              },
+                              child: Container(
+                                margin: const EdgeInsets.only(left: 16),
+                                alignment: Alignment.center,
+                                width: size.width / 4,
+                                decoration: selectedGenre == index
+                                    ? BoxDecoration(
+                                        borderRadius: BorderRadius.circular(8),
+                                        color: Colors.deepPurple)
+                                    : BoxDecoration(color: Colors.transparent),
+                                child: Text(
+                                  genres[index].name,
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.normal),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+              ]),
         ]))),
         drawer: Drawer(
           child: Container(
               color: Colors.deepPurple,
               child: ListView(
-                children: [
+                children: const [
                   DrawerHeader(
                       child: Center(
                     child: Text('Drawer Header'),
