@@ -51,3 +51,9 @@ class MovieGenre {
   final String name;
   MovieGenre({required this.id, required this.name});
 }
+
+class MovieType {
+  final String type;
+  final String name;
+  MovieType({required this.type, required this.name});
+}

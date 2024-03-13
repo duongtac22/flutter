@@ -21,16 +21,24 @@ class HomeScreenState extends State<HomeScreen> {
   // final _scrollController = ScrollController();
   final int _page = 1;
   int selectedGenre = 0;
+  int selectedType = 0;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   List<MovieGenre> genres = [];
   // bool _isLoading = true;
+
+  List<MovieType> movieTypes = [
+    MovieType(type: 'popular', name: 'Popular'),
+    MovieType(type: 'top_rated', name: 'Top Rated'),
+    MovieType(type: 'upcoming', name: 'Upcoming'),
+    MovieType(type: 'now_playing', name: 'Now Playing'),
+  ];
 
   Future<void> loadData({String moviesType = 'popular', int page = 1}) async {
     MovieModels movieModel = MovieModels();
     _movieCards =
         await movieModel.getMovies(moviesType: moviesType, page: _page);
-    // log('movieCards day temp: $_movieCards');
-    temp.addAll(_movieCards!);
+    // log('movieCards day temp: $moviesType');
+    temp = _movieCards!;
     // debugPrint('temp $temp');
   }
 
@@ -73,7 +81,6 @@ class HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-
     return Scaffold(
         key: _scaffoldKey,
         resizeToAvoidBottomInset: false,
@@ -115,25 +122,26 @@ class HomeScreenState extends State<HomeScreen> {
                   height: size.height / 18,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: genres.length,
+                    itemCount: movieTypes.length,
                     itemBuilder: (context, index) {
                       return GestureDetector(
                         onTap: () {
                           setState(() {
-                            selectedGenre = index;
+                            selectedType = index;
+                            loadData(moviesType: movieTypes[index].type);
                           });
                         },
                         child: Container(
                           margin: const EdgeInsets.only(left: 16),
                           alignment: Alignment.center,
                           width: size.width / 4,
-                          decoration: selectedGenre == index
+                          decoration: selectedType == index
                               ? BoxDecoration(
                                   borderRadius: BorderRadius.circular(8),
                                   color: Colors.deepPurple)
                               : BoxDecoration(color: Colors.transparent),
                           child: Text(
-                            genres[index].name,
+                            movieTypes[index].name,
                             style: TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.normal),
                           ),

@@ -6,11 +6,11 @@ import 'package:flutter_tutorial/models/movie.dart';
 import 'package:flutter_tutorial/services/networking.dart';
 import 'package:flutter_tutorial/widget/movie_card.dart';
 
-enum MovieParams {
-  popular,
-  upcoming,
-  top_rated,
-}
+// enum MovieParams {
+//   popular,
+//   upcoming,
+//   top_rated,
+// }
 
 class MovieModels {
   Future _fetchMovie({required String url}) async {
