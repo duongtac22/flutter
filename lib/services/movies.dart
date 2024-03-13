@@ -73,8 +73,8 @@ class MovieModels {
   }
 
   Future<MovieDetail> getMovieDetail({required String movieId}) async {
-    var data = await _fetchMovie(
-        url: 'https://api.themoviedb.org/3/movie/$movieId?api_key=$apiKey');
+    var data =
+        await _fetchMovie(url: '$apiDetailMovie$movieId?api_key=$apiKey');
     // log(data);
     // return MovieDetail(
     //     backgroundURL: 'aaaaa', title: 'title', overview: 'overview');
@@ -94,6 +94,31 @@ class MovieModels {
         MovieGenre(
           id: item["id"].toString(),
           name: item["name"],
+        ),
+      );
+    }
+
+    return Future.value(temp);
+  }
+
+  Future<List<MovieCard>> getMovieByGenre({required genreId}) async {
+    List<MovieCard> temp = [];
+    var data = await _fetchMovie(
+        url: '$apiDiscoverURL?api_key=$apiKey&with_genres=$genreId');
+
+    for (var item in data["results"]) {
+      temp.add(
+        MovieCard(
+          movieModel2: MovieModel2(
+            title: item["title"],
+            imageUrl: "$apiImageURL${item["poster_path"]}",
+            overview: item["overview"],
+            year: (item["release_date"].toString().length > 4)
+                ? item["release_date"].toString().substring(0, 4)
+                : "",
+            id: item["id"].toString(),
+            rating: item["vote_average"].toDouble(),
+          ),
         ),
       );
     }

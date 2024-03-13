@@ -5,7 +5,8 @@ import 'package:flutter_tutorial/screens/detail_movie.dart';
 
 class MovieCard extends StatelessWidget {
   final MovieModel2 movieModel2;
-  const MovieCard({required this.movieModel2, super.key});
+  // const MovieCard({required this.movieModel2, super.key});
+  const MovieCard({Key? key, required this.movieModel2}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,42 +21,110 @@ class MovieCard extends StatelessWidget {
                     )));
       },
       child: Container(
-        decoration: BoxDecoration(
-          color: Colors.grey[400],
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Column(
-          children: <Widget>[
-            ClipRRect(
-              borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(12), topRight: Radius.circular(12)),
-              child: CachedNetworkImage(
-                height: 220,
+          decoration: BoxDecoration(
+            color: Colors.grey[400],
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Flexible(
+              // child: Column(
+              //   children: [
+              //     Expanded(
+              //       flex: 1,
+              //       child: ClipRRect(
+              //         borderRadius: const BorderRadius.only(
+              //             topLeft: Radius.circular(12),
+              //             topRight: Radius.circular(12)),
+              //         child: CachedNetworkImage(
+              //           width: double.infinity,
+              //           fit: BoxFit.fitWidth,
+              //           placeholder: (context, url) => const Column(
+              //             mainAxisAlignment: MainAxisAlignment.center,
+              //             children: [CircularProgressIndicator()],
+              //           ),
+              //           imageUrl: movieModel2.imageUrl,
+              //           errorWidget: (context, url, error) => const Column(
+              //             children: [CircularProgressIndicator()],
+              //           ),
+              //         ),
+              //       ),
+              //     ),
+              //     Expanded(
+              //       child: Padding(
+              //         padding: const EdgeInsets.all(10),
+              //         child: Text(
+              //           movieModel2.title,
+              //           maxLines: 1,
+              //           overflow: TextOverflow.ellipsis,
+              //           style: const TextStyle(
+              //               fontSize: 18, fontWeight: FontWeight.w500),
+              //         ),
+              //       ),
+              //     )
+              //   ],
+              // ),
+              child: Stack(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey[400],
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: CachedNetworkImage(
+                    width: double.infinity,
+                    fit: BoxFit.fitWidth,
+                    placeholder: (context, url) => const Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [CircularProgressIndicator()],
+                    ),
+                    imageUrl: movieModel2.imageUrl,
+                    errorWidget: (context, url, error) => const Column(
+                      children: [CircularProgressIndicator()],
+                    ),
+                  ),
+                ),
+              ),
+              Container(
                 width: double.infinity,
-                fit: BoxFit.cover,
-                placeholder: (context, url) => const Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [CircularProgressIndicator()],
+                decoration: BoxDecoration(
+                  color: Colors.grey[400],
+                  borderRadius: BorderRadius.circular(12),
+                  gradient: const LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [Colors.transparent, Colors.black]),
                 ),
-                imageUrl: movieModel2.imageUrl,
-                errorWidget: (context, url, error) => const Column(
-                  children: [CircularProgressIndicator()],
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.all(8),
+                      child: Text(
+                        movieModel2.title,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.w500),
+                      ),
+                    )
+                  ],
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: Text(
-                movieModel2.title,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style:
-                    const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-              ),
-            ),
-          ],
-        ),
-      ),
+
+              // Positioned(
+              //   bottom: 10,
+              //   left: 10,
+              //   child: Text(
+              //     movieModel2.title,
+              //     maxLines: 1,
+              //     overflow: TextOverflow.ellipsis,
+              //     style: const TextStyle(
+              //         fontSize: 18, fontWeight: FontWeight.w500),
+              //   ),
+              // )
+            ],
+          ))),
     );
   }
 }

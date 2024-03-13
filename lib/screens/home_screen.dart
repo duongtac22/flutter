@@ -6,6 +6,7 @@ import 'package:flutter_tutorial/services/movies.dart';
 import 'package:flutter_tutorial/widget/carousel_widget.dart';
 import 'package:flutter_tutorial/widget/home_header.dart';
 import 'package:flutter_tutorial/widget/movie_card.dart';
+import 'package:flutter_tutorial/widget/movie_card_container.dart';
 import 'package:flutter_tutorial/widget/search_appbar.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -16,13 +17,17 @@ class HomeScreen extends StatefulWidget {
 }
 
 class HomeScreenState extends State<HomeScreen> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   List<MovieCard>? _movieCards;
   List<MovieCard> temp = [];
+  List<MovieCard> movvieByGenre = [];
+
   // final _scrollController = ScrollController();
   final int _page = 1;
   int selectedGenre = 0;
   int selectedType = 0;
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   List<MovieGenre> genres = [];
   // bool _isLoading = true;
 
@@ -38,27 +43,41 @@ class HomeScreenState extends State<HomeScreen> {
     _movieCards =
         await movieModel.getMovies(moviesType: moviesType, page: _page);
     // log('movieCards day temp: $moviesType');
-    temp = _movieCards!;
+
     // debugPrint('temp $temp');
+    setState(() {
+      temp = _movieCards!;
+    });
   }
 
   Future<void> loadGenres() async {
     MovieModels movieModel = MovieModels();
     genres =
         await movieModel.getMovieGenre(url: '$apiGenreURL?api_key=$apiKey');
+    setState(() {});
+  }
+
+  Future<void> loadMovieByGenre({required String genreId}) async {
+    MovieModels movieModel = MovieModels();
+    movvieByGenre = await movieModel.getMovieByGenre(genreId: genreId);
+    setState(() {
+      movvieByGenre;
+    });
   }
 
   Future<void> fetchData() async {
     await loadData();
     await loadGenres();
+    // loadMovieByGenre run after loadGenres finised
+    await loadMovieByGenre(genreId: genres[0].id);
   }
 
   // init state
   @override
   void initState() {
-    setState(() {
+    () async {
       fetchData();
-    });
+    }();
     // _scrollController.addListener(() {
     //   if (_scrollController.position.maxScrollExtent ==
     //       _scrollController.offset) {
@@ -88,10 +107,9 @@ class HomeScreenState extends State<HomeScreen> {
           toolbarHeight: 0,
           backgroundColor: Colors.transparent,
         ),
-        body: SafeArea(
-            child: SingleChildScrollView(
-                // controller: _scrollController,
-                child: Column(children: [
+        body: SingleChildScrollView(
+            // controller: _scrollController,
+            child: Column(children: [
           HomeHeader(size: size),
           // TextButton(
           //   onPressed: () {
@@ -99,50 +117,92 @@ class HomeScreenState extends State<HomeScreen> {
           //   },
           //   child: const Text('Load More'),
           // ),
-          Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+            child: CustomSearchAppbarContent(
+              onSubmitted: (value) {
+                if (value.isEmpty) return;
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => SearchMovieScreen(
+                              searchQuery: value,
+                            )));
+              },
+            ),
+          ),
+          SizedBox(
+            height: size.height / 18,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: movieTypes.length,
+              itemBuilder: (context, index) {
+                return GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      selectedType = index;
+                      loadData(moviesType: movieTypes[index].type);
+                    });
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.only(left: 16),
+                    alignment: Alignment.center,
+                    width: size.width / 4,
+                    decoration: selectedType == index
+                        ? BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            color: Colors.deepPurple)
+                        : const BoxDecoration(color: Colors.transparent),
+                    child: Text(
+                      movieTypes[index].name,
+                      style: const TextStyle(
+                          fontSize: 16, fontWeight: FontWeight.normal),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+          (temp.isEmpty)
+              ? const Center(
+                  child: CircularProgressIndicator(),
+                )
+              : Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
-                  child: CustomSearchAppbarContent(
-                    onSubmitted: (value) {
-                      if (value.isEmpty) return;
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SearchMovieScreen(
-                                    searchQuery: value,
-                                  )));
-                    },
-                  ),
+                  child: (temp.isEmpty)
+                      ? const Center(child: Text("Empty List "))
+                      : CarouselWidget(temp: temp, size: size),
                 ),
-                SizedBox(
+          (genres.isEmpty)
+              ? const Center(child: CircularProgressIndicator())
+              : SizedBox(
                   height: size.height / 18,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: movieTypes.length,
+                    itemCount: genres.length,
                     itemBuilder: (context, index) {
                       return GestureDetector(
                         onTap: () {
                           setState(() {
-                            selectedType = index;
-                            loadData(moviesType: movieTypes[index].type);
+                            selectedGenre = index;
+
+                            loadMovieByGenre(
+                                genreId: genres[index].id.toString());
                           });
                         },
                         child: Container(
                           margin: const EdgeInsets.only(left: 16),
                           alignment: Alignment.center,
                           width: size.width / 4,
-                          decoration: selectedType == index
+                          decoration: selectedGenre == index
                               ? BoxDecoration(
                                   borderRadius: BorderRadius.circular(8),
                                   color: Colors.deepPurple)
-                              : BoxDecoration(color: Colors.transparent),
+                              : const BoxDecoration(color: Colors.transparent),
                           child: Text(
-                            movieTypes[index].name,
-                            style: TextStyle(
+                            genres[index].name,
+                            style: const TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.normal),
                           ),
                         ),
@@ -150,53 +210,19 @@ class HomeScreenState extends State<HomeScreen> {
                     },
                   ),
                 ),
-                (temp.isEmpty)
-                    ? const Center(
-                        child: CircularProgressIndicator(),
-                      )
-                    : Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 24, vertical: 24),
-                        child: (temp.isEmpty)
-                            ? const Center(child: Text("Empty List "))
-                            : CarouselWidget(temp: temp, size: size),
-                      ),
-                (genres.isEmpty)
-                    ? const Center(child: CircularProgressIndicator())
-                    : SizedBox(
-                        height: size.height / 18,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: genres.length,
-                          itemBuilder: (context, index) {
-                            return GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  selectedGenre = index;
-                                });
-                              },
-                              child: Container(
-                                margin: const EdgeInsets.only(left: 16),
-                                alignment: Alignment.center,
-                                width: size.width / 4,
-                                decoration: selectedGenre == index
-                                    ? BoxDecoration(
-                                        borderRadius: BorderRadius.circular(8),
-                                        color: Colors.deepPurple)
-                                    : BoxDecoration(color: Colors.transparent),
-                                child: Text(
-                                  genres[index].name,
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.normal),
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-              ]),
-        ]))),
+          (movvieByGenre.isEmpty)
+              ? const Text('Empty')
+              : Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+                  child: (movvieByGenre.isEmpty)
+                      ? const Center(child: Text("Empty List "))
+                      : SizedBox(
+                          width: size.width,
+                          height: 400,
+                          child: MovieCardContainer(movieCards: movvieByGenre)),
+                ),
+        ])),
         drawer: Drawer(
           child: Container(
               color: Colors.deepPurple,
