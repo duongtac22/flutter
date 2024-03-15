@@ -6,7 +6,7 @@ import 'package:flutter_tutorial/screens/detail_movie.dart';
 class MovieCard extends StatelessWidget {
   final MovieModel2 movieModel2;
   // const MovieCard({required this.movieModel2, super.key});
-  const MovieCard({Key? key, required this.movieModel2}) : super(key: key);
+  const MovieCard({super.key, required this.movieModel2});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class MovieCard extends StatelessWidget {
             color: Colors.grey[400],
             borderRadius: BorderRadius.circular(12),
           ),
-          child: Flexible(
+          child: SizedBox(
               // child: Column(
               //   children: [
               //     Expanded(
@@ -99,7 +99,7 @@ class MovieCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Padding(
-                      padding: EdgeInsets.all(8),
+                      padding: const EdgeInsets.all(8),
                       child: Text(
                         movieModel2.title,
                         maxLines: 1,

@@ -8,6 +8,7 @@ import 'package:flutter_tutorial/widget/home_header.dart';
 import 'package:flutter_tutorial/widget/movie_card.dart';
 import 'package:flutter_tutorial/widget/movie_card_container.dart';
 import 'package:flutter_tutorial/widget/search_appbar.dart';
+import 'package:flutter_tutorial/widget/skeleton/skeleton-movie-slider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -61,7 +62,7 @@ class HomeScreenState extends State<HomeScreen> {
     MovieModels movieModel = MovieModels();
     movvieByGenre = await movieModel.getMovieByGenre(genreId: genreId);
     setState(() {
-      movvieByGenre;
+      // movvieByGenre;
     });
   }
 
@@ -131,6 +132,7 @@ class HomeScreenState extends State<HomeScreen> {
               },
             ),
           ),
+
           SizedBox(
             height: size.height / 18,
             child: ListView.builder(
@@ -163,17 +165,23 @@ class HomeScreenState extends State<HomeScreen> {
               },
             ),
           ),
-          (temp.isEmpty)
-              ? const Center(
-                  child: CircularProgressIndicator(),
-                )
-              : Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
-                  child: (temp.isEmpty)
-                      ? const Center(child: Text("Empty List "))
-                      : CarouselWidget(temp: temp, size: size),
-                ),
+
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+            child: (temp.isEmpty)
+                ? Container(
+                    padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+                    child: Row(
+                      children: [
+                        SkeletonMovieSlide(
+                          width: size.width - 32,
+                          height: 200,
+                        )
+                      ],
+                    ),
+                  )
+                : CarouselWidget(temp: temp, size: size),
+          ),
           (genres.isEmpty)
               ? const Center(child: CircularProgressIndicator())
               : SizedBox(
@@ -210,18 +218,25 @@ class HomeScreenState extends State<HomeScreen> {
                     },
                   ),
                 ),
-          (movvieByGenre.isEmpty)
-              ? const Text('Empty')
-              : Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
-                  child: (movvieByGenre.isEmpty)
-                      ? const Center(child: Text("Empty List "))
-                      : SizedBox(
-                          width: size.width,
-                          height: 400,
-                          child: MovieCardContainer(movieCards: movvieByGenre)),
-                ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+            child: (movvieByGenre.isEmpty)
+                ? Container(
+                    padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+                    child: Row(
+                      children: [
+                        SkeletonMovieSlide(
+                          width: size.width - 32,
+                          height: 200,
+                        )
+                      ],
+                    ),
+                  )
+                : SizedBox(
+                    width: size.width,
+                    height: 400,
+                    child: MovieCardContainer(movieCards: movvieByGenre)),
+          ),
         ])),
         drawer: Drawer(
           child: Container(
