@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tutorial/common/settings.dart';
-import 'package:flutter_tutorial/screens/home_screen.dart';
+import 'package:flutter_tutorial/screens/on_boarding_screen.dart';
+import 'package:flutter_tutorial/screens/register_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 void main() {
@@ -16,17 +16,19 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
           primarySwatch: Colors.blue,
-          fontFamily: 'roboto',
-          scaffoldBackgroundColor: const Color(0xFF0B0F2F),
+          fontFamily: 'Poppins',
+          scaffoldBackgroundColor: const Color(0xFFFEFEFE),
           textTheme: Theme.of(context).textTheme.apply(
                 bodyColor: Colors.white,
                 displayColor: Colors.white,
-                fontFamily: GoogleFonts.roboto().fontFamily,
+                fontFamily: GoogleFonts.poppins().fontFamily,
               )),
-      title: 'Movies App',
-      home: HomeScreen(
-        key: homeScreenKey,
-      ),
+      title: 'Shopfee App',
+      // home: OnBoardingScreen(),
+      routes: {
+        "/": (context) => const OnBoardingScreen(),
+        "/register": (context) => const RegisterScreen()
+      },
     );
   }
 }
