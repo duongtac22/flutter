@@ -38,12 +38,15 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
     return Scaffold(
-      body: SafeArea(
+      body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+          height: size.height,
           child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
+              // mainAxisSize: MainAxisSize.max,
               children: <Widget>[
                 Container(
                   alignment: Alignment.centerRight,
@@ -68,7 +71,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                 ),
                 SizedBox(
                   width: double.infinity,
-                  height: 600,
+                  height: size.height * 0.6,
                   child: PageView(
                     physics: const ClampingScrollPhysics(),
                     controller: _pageController,
@@ -77,11 +80,12 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                         _current = page;
                       });
                     },
-                    children: const <Widget>[
+                    children: <Widget>[
                       Padding(
-                        padding: EdgeInsets.only(top: 60),
-                        child: Column(
+                        padding: EdgeInsets.only(top: size.height * 0.1),
+                        child: const Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
                             Center(
                               child: Image(
@@ -90,9 +94,10 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                                 height: 200,
                               ),
                             ),
-                            SizedBox(height: 60),
+                            SizedBox(height: 30),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
                               children: [
                                 Text(
                                   'Choose and customize your Drinks',
@@ -110,6 +115,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                                     fontWeight: FontWeight.w400,
                                     color: Color(0xFF3C3C3C),
                                   ),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 3,
                                 ),
                               ],
                             )
@@ -117,8 +124,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(top: 60),
-                        child: Column(
+                        padding: EdgeInsets.only(top: size.height * 0.1),
+                        child: const Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Center(
@@ -128,9 +135,10 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                                 height: 200,
                               ),
                             ),
-                            SizedBox(height: 60),
+                            SizedBox(height: 30),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
                               children: [
                                 Text(
                                   'Quickly and easly',
@@ -148,6 +156,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                                     fontWeight: FontWeight.w400,
                                     color: Color(0xFF3C3C3C),
                                   ),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 3,
                                 ),
                               ],
                             )
@@ -155,8 +165,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(top: 60),
-                        child: Column(
+                        padding: EdgeInsets.only(top: size.height * 0.1),
+                        child: const Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Center(
@@ -166,9 +176,10 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                                 height: 200,
                               ),
                             ),
-                            SizedBox(height: 60),
+                            SizedBox(height: 30),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
                               children: [
                                 Text(
                                   'Get and Redeem Voucher',
@@ -186,6 +197,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                                     fontWeight: FontWeight.w400,
                                     color: Color(0xFF3C3C3C),
                                   ),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 3,
                                 ),
                               ],
                             )
@@ -198,6 +211,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                 const SizedBox(height: 16),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
